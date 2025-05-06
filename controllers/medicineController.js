@@ -43,3 +43,28 @@ exports.deleteMedicine = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// Get today's medicines
+exports.getTodaysMedicines = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Set time to start of today (00:00:00)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Set time to start of tomorrow (for end boundary)
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const todaysMeds = await Medicine.find({
+      userId,
+      startDate: { $lte: today },
+      endDate: { $gte: today }
+    });
+
+    res.status(200).json(todaysMeds);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching today's medicines", error: err.message });
+  }
+};
+
