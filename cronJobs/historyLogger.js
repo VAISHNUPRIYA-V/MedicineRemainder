@@ -12,7 +12,7 @@ const logMedicationEvents = async () => {
         console.log(`Cron job running at UTC: ${now.format('YYYY-MM-DD HH:mm:ss')}`);
 
         const activeMeds = await Medicine.find({
-            userId: '6813ba915de5066087cef007', // Focus on this user for debugging
+            userId: '6813ba915de5066087cef007',
             endDate: { $gte: todayStart.toDate() },
             times: { $exists: true, $not: { $size: 0 } },
             startDate: { $lte: todayEnd.toDate() }
@@ -36,17 +36,15 @@ const logMedicationEvents = async () => {
                         millisecond: 0
                     });
 
-                    console.log(`  Checking schedule for ${currentDate.format('YYYY-MM-DD')} at ${scheduledDateTime.format('HH:mm')} UTC`);
-                    console.log(`  Current UTC time: ${now.format('YYYY-MM-DD HH:mm')}`);
-
                     if (scheduledDateTime.isBefore(now)) {
-                        console.log(`    Scheduled time is in the past.`);
-                        const alreadyLogged = await History.findOne({
+                        const logQuery = {
                             userId: med.userId,
                             medicineId: med._id,
                             date: scheduledDateTime.clone().startOf('day').toDate(),
                             time: scheduledDateTime.format('HH:mm')
-                        });
+                        };
+                        const alreadyLogged = await History.findOne(logQuery);
+                        console.log(`  Checking if already logged: ${med.name} on ${scheduledDateTime.format('YYYY-MM-DD')} at ${scheduledDateTime.format('HH:mm')} UTC - Query:`, logQuery, "Result:", !!alreadyLogged);
 
                         if (!alreadyLogged) {
                             const newHistory = new History({
@@ -58,11 +56,7 @@ const logMedicationEvents = async () => {
                             });
                             await newHistory.save();
                             console.log(`    Logged history: ${med.name} on ${scheduledDateTime.format('YYYY-MM-DD HH:mm')}`);
-                        } else {
-                            console.log(`    Already logged: ${med.name} on ${scheduledDateTime.format('YYYY-MM-DD HH:mm')}`);
                         }
-                    } else {
-                        console.log(`    Scheduled time is in the future.`);
                     }
                 }
             }
