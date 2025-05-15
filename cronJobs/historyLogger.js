@@ -35,13 +35,11 @@ const logExpiredMedications = async () => {
       }
     }
 
-    console.log("✅ History logged for expired medications.");
+    console.log("History logged for expired medications.");
   } catch (err) {
-    console.error("❌ Error logging history:", err.message);
+    console.error("Error logging history:", err.message);
   }
 };
-
-// ⏰ Schedule: Every day at 12:05 AM
 const startHistoryLogger = () => {
   cron.schedule('5 0 * * *', logExpiredMedications);
 };

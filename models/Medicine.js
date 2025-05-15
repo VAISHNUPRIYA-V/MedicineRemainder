@@ -10,7 +10,7 @@ const medicineSchema = new mongoose.Schema({
   name: String,
   dosage: String,
   frequency: Number,
-  times: [String], // e.g., ['08:00', '20:00']
+  times: [String], 
   startDate: Date,
   endDate: Date,
   createdAt: {

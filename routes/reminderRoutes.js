@@ -1,4 +1,4 @@
-// routes/reminderRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const { setReminder, getReminders, updateReminderStatus } = require('../controllers/reminderController');

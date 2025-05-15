@@ -1,12 +1,12 @@
-// controllers/reminderController.js
+
 const Reminder = require('../models/Reminder');
 const History = require('../models/History');
 const moment = require('moment');
-// controllers/reminderController.js
+
 
 exports.setReminder = async (req, res) => {
   try {
-    const { medicineId, reminderTime, note } = req.body; // adjust fields as needed
+    const { medicineId, reminderTime, note } = req.body; 
     const userId = req.user.id;
 
     const newReminder = new Reminder({
@@ -14,7 +14,7 @@ exports.setReminder = async (req, res) => {
       medicineId,
       reminderTime,
       note,
-      status: 'Pending', // or default status
+      status: 'Pending', 
     });
 
     await newReminder.save();
@@ -25,7 +25,7 @@ exports.setReminder = async (req, res) => {
   }
 };
 
-// controllers/reminderController.js
+
 
 
 
@@ -33,27 +33,27 @@ exports.setReminder = async (req, res) => {
 exports.updateReminderStatus = async (req, res) => {
   try {
     const { reminderId, status } = req.body;
-    const userId = req.user.id; // User extracted from authentication middleware
+    const userId = req.user.id; 
 
-    // Log the incoming request data for debugging
+   
     console.log("Updating reminder with ID:", reminderId);
     console.log("User ID from token:", userId);
     
-    // Find the reminder by reminderId and userId
+    
     const reminder = await Reminder.findOne({ _id: reminderId, userId });
     
-    // Log the reminder found (if any)
-    console.log("Reminder found:", reminder);
+    
+    
 
     if (!reminder) {
       return res.status(404).json({ message: 'Reminder not found' });
     }
 
-    // Update the status of the reminder
+    
     reminder.status = status;
     await reminder.save();
 
-    // Optionally, record this action in the History model
+    
     await History.create({
       userId,
       medicineId: reminder.medicineId,
@@ -62,7 +62,7 @@ exports.updateReminderStatus = async (req, res) => {
       date: new Date(),
     });
 
-    // Return updated reminder
+   
     res.status(200).json({
       message: 'Reminder status updated successfully',
       reminder: reminder,
@@ -73,7 +73,7 @@ exports.updateReminderStatus = async (req, res) => {
 };
 
 
-// controllers/reminderController.js
+
 
 exports.getReminders = async (req, res) => {
   try {

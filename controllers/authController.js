@@ -1,9 +1,9 @@
-// controllers/authController.js
+
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// Register
+
 exports.register = async (req, res) => {
   try {
     const { name, age, mobile, email, password } = req.body;
@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
   }
 };
 
-// Forgot Password (basic example)
+
 exports.forgotPassword = (req, res) => {
   const { email } = req.body;
   res.status(200).json({ msg: `Password reset link sent to ${email} (mock)` });

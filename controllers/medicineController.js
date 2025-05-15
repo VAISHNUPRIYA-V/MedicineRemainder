@@ -1,4 +1,4 @@
-// controllers/medicineController.js
+
 const Medicine = require('../models/Medicine');
 
 exports.addMedicine = async (req, res) => {
@@ -43,16 +43,16 @@ exports.deleteMedicine = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-// Get today's medicines
+
 exports.getTodaysMedicines = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Set time to start of today (00:00:00)
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Set time to start of tomorrow (for end boundary)
+    
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 

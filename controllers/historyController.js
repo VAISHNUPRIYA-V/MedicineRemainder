@@ -1,4 +1,4 @@
-// controllers/historyController.js
+
 const History = require('../models/History');
 const Medicine = require('../models/Medicine');
 const moment = require('moment');
@@ -32,7 +32,7 @@ exports.getHistory = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-// controllers/historyController.js
+
 exports.addHistory = async (req, res) => {
   try {
     const { medicineId, date, time, status } = req.body;
