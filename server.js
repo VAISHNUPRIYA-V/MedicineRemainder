@@ -12,7 +12,7 @@ const medicineRoutes = require('./routes/medicineRoutes');
 const reminderRoutes = require('./routes/reminderRoutes');
 const historyRoutes = require('./routes/historyRoutes');
 const userRoutes = require('./routes/userRoutes');
-
+const medicineInfoRoutes = require('./routes/medicineInfo');
 const app = express();
 
 app.use(cors());
@@ -24,7 +24,7 @@ app.use('/api/medicines', medicineRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reminders', reminderRoutes);
-
+app.use('/api/medicineinfo', medicineInfoRoutes);
 // ✅ Start cron job
 const startHistoryLogger = require('./cronJobs/historyLogger');
 startHistoryLogger();
