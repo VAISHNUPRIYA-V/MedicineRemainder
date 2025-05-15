@@ -20,7 +20,15 @@ router.post('/', async (req, res) => {
       let interactions = firstResult.drug_interactions ? firstResult.drug_interactions[0] : 'Drug interactions information not available.';
       let warnings = firstResult.warnings_and_precautions ? firstResult.warnings_and_precautions[0] : 'Warnings and precautions not available.';
 
-      const formattedResponse = `Information for ${query}:\n\nUsage: ${usage}\n\nDosage and Administration: ${dosage}\n\nSide Effects: ${sideEffects}\n\nDrug Interactions: ${interactions}\n\nWarnings and Precautions: ${warnings}\n\n**Please note:** This information is sourced from the openFDA API and may not be exhaustive. Always consult a healthcare professional for medical advice.`;
+      const formattedResponse = {
+  usage: usage,
+  dosage: dosage,
+  sideEffects: sideEffects,
+  interactions: interactions,
+  warnings: warnings,
+  disclaimer: "**Please note:** This information is sourced from the openFDA API and may not be exhaustive. Always consult a healthcare professional for medical advice."
+};
+res.json({ response: formattedResponse });
 
       res.json({ response: formattedResponse });
     } else {
