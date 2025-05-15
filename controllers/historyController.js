@@ -32,3 +32,24 @@ exports.getHistory = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// controllers/historyController.js
+exports.addHistory = async (req, res) => {
+  try {
+    const { medicineId, date, time, status } = req.body;
+    const userId = req.user.id;
+
+    const newHistory = new History({
+      userId,
+      medicineId,
+      date,
+      time,
+      status
+    });
+
+    await newHistory.save();
+    res.status(201).json({ message: "History record added", newHistory });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
