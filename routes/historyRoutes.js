@@ -5,6 +5,6 @@ const { getHistory, addHistory } = require('../controllers/historyController');
 const auth = require('../middleware/authMiddleware');
 
 router.get('/', auth, getHistory);
-router.post('/add', auth, addHistory);
+// router.post('/add', auth, addHistory);
 
 module.exports = router;

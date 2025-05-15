@@ -7,7 +7,6 @@ const {
   getTodaysMedicines, 
 } = require('../controllers/medicineController');
 const auth = require('../middleware/authMiddleware');
-
 router.post('/add', auth, addMedicine);
 router.get('/', auth, getMedicines);
 router.delete('/:id', auth, deleteMedicine);
