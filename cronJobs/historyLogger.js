@@ -54,7 +54,7 @@ const logMedicationEvents = async () => {
 };
 
 const startHistoryLogger = () => {
-    cron.schedule('*/5 * * * *', logMedicationEvents); // Run every 15 minutes
+    cron.schedule('*/1 * * * *', logMedicationEvents); // Run every 15 minutes
 };
 
 module.exports = startHistoryLogger;

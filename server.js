@@ -25,9 +25,9 @@ app.use('/api/history', historyRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/medicineinfo', medicineInfoRoutes);
-// ✅ Start cron job
-// const startHistoryLogger = require('./cronJobs/historyLogger');
-// startHistoryLogger();
+
+const startHistoryLogger = require('./cronJobs/historyLogger');
+startHistoryLogger();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
