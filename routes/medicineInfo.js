@@ -8,31 +8,27 @@ router.post('/', async (req, res) => {
   const { query } = req.body;
 
   try {
-    const response = await axios.post(
-      'https://api.groq.com/openai/v1/chat/completions',
-      {
-        model: 'mixtral-8x7b-32768', // or use 'llama3-70b-8192' or 'gpt-4-turbo' if supported
-        messages: [
-          {
-            role: 'user',
-            content: `Provide detailed information about the medicine: ${query}. Include its usage, dosage, side effects, and any interactions.`,
-          },
-        ],
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const openFDAUrl = `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${query}"+OR+openfda.generic_name:"${query}"`;
 
-    const aiResponse = response.data.choices[0].message.content;
-    res.json({ response: aiResponse });
+    const response = await axios.get(openFDAUrl);
 
+    if (response.data.results && response.data.results.length > 0) {
+      const firstResult = response.data.results[0];
+      let usage = firstResult.indications_and_usage ? firstResult.indications_and_usage[0] : 'Usage information not available.';
+      let sideEffects = firstResult.adverse_reactions ? firstResult.adverse_reactions[0] : 'Side effects information not available.';
+      let dosage = firstResult.dosage_and_administration ? firstResult.dosage_and_administration[0] : 'Dosage information not available.';
+      let interactions = firstResult.drug_interactions ? firstResult.drug_interactions[0] : 'Drug interactions information not available.';
+      let warnings = firstResult.warnings_and_precautions ? firstResult.warnings_and_precautions[0] : 'Warnings and precautions not available.';
+
+      const formattedResponse = `Information for ${query}:\n\nUsage: ${usage}\n\nDosage and Administration: ${dosage}\n\nSide Effects: ${sideEffects}\n\nDrug Interactions: ${interactions}\n\nWarnings and Precautions: ${warnings}\n\n**Please note:** This information is sourced from the openFDA API and may not be exhaustive. Always consult a healthcare professional for medical advice.`;
+
+      res.json({ response: formattedResponse });
+    } else {
+      res.status(404).json({ response: `No information found for "${query}" on openFDA.` });
+    }
   } catch (err) {
-    console.error('GROQ API error:', err.message);
-    res.status(500).json({ response: 'Failed to fetch information.' });
+    console.error('openFDA API error:', err.message);
+    res.status(500).json({ response: 'Failed to fetch information from openFDA.' });
   }
 });
 
