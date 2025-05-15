@@ -69,7 +69,7 @@ const logMedicationEvents = async () => {
 };
 
 const startHistoryLogger = () => {
-    cron.schedule('*/1 * * * *', logMedicationEvents);
+    cron.schedule('*/15 * * * *', logMedicationEvents);
     logMedicationEvents();
 };
 
